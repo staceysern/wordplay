@@ -111,6 +111,34 @@ def most_appearances(filename):
     return letter, word, occurrences
 
 
+def most_frequent_letters(word):
+    """
+    Return a tuple containing a list of the letter or letters which appear most
+    frequently in a word and the number of occurrences.
+    """
+    frequencies = char_frequencies(word)
+    occurrences = max(frequencies.values())
+    letters = [k for k, v in frequencies.items() if v == occurrences]
+    return letters, occurrences
+
+
+def most_appearances_by_letter(filename):
+    """
+    Return a dictionary mapping letter to a tuple of the most times that letter
+    is found in a word or words and the list of those words.
+    """
+    appearances = {chr(code): (0, []) for code in range(ord('A'), ord('Z')+1)}
+
+    for word in words(filename):
+        letters, occurrences = most_frequent_letters(word)
+        for letter in letters:
+            if occurrences > appearances[letter][0]:
+                appearances[letter] = (occurrences, [word])
+            elif occurrences == appearances[letter][0]:
+                appearances[letter][1].append(word)
+    return appearances
+
+
 def longest_anagram(filename):
     """
     Return the set of words from a file which are the longest anagrams of
@@ -155,6 +183,11 @@ def wordplay(filename):
     print "\nLongest anagrams:"
     print longest_anagram(filename)
 
+    print "\nWords in which each letter appears most frequently:"
+    appearances = most_appearances_by_letter(filename)
+    for letter, (occurrences, wrds) in appearances.items():
+        print "{} ({}): {}".format(letter, occurrences, wrds)
 
+    
 if __name__ == "__main__":
     wordplay('sowpods.txt')

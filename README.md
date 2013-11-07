@@ -1,5 +1,5 @@
 Wordplay
-===============
+========
 
 Using the official SOWPODS Scrabble dictionary, Wordplay answers the following questions:
 
@@ -11,8 +11,9 @@ Using the official SOWPODS Scrabble dictionary, Wordplay answers the following q
  * What words contain all of the vowels and Y, in any order?
  * What letter makes the most appearances in a single word, and what is that word?
  * What words are the longest anagrams of each other?
+ * For each letter, what words contain the most occurrences of that letter?
 
 Invocation
------------------
+----------
 
 python wordplay.py

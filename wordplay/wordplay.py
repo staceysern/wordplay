@@ -1,7 +1,7 @@
 import re
+import string
 
 re_q_without_u = re.compile(r".*(Q[^U]).*|.*Q$")
-re_double_letter = re.compile(r".*(.)\1.*")
 re_vowels_in_order = re.compile(r"[^AEIOUY]*A[^EIOUY]*E[^IOUY]"
                                 "*I[OUY]*O[^UY]*U[^Y]*Y.*")
 
@@ -20,7 +20,7 @@ def uu(word):
     """
     Returns a boolean indicating whether the string 'UU' appears in a word.
     """
-    return not word.find('UU') == -1
+    return 'UU' in word
 
 
 def q_but_not_u(word):
@@ -47,7 +47,7 @@ def not_doubled(filename):
     Return a list of letters which do not appear as double letters in any word
     a file.
     """
-    alphabet = {chr(code) for code in range(ord('A'), ord('Z')+1)}
+    alphabet = set(string.ascii_uppercase)
 
     doubled = reduce(set.union,
                      [double_letters(word) for word in words(filename)])
@@ -102,11 +102,12 @@ def most_appearances(filename):
     Return a tuple of the letter which appears most often in a single word in
     a file, the word, and the number of occurrences in that word.
     """
-    most = [(word, most_frequent_letter(word)) 
+    most = [(word, most_frequent_letter(word))
             for word in words(filename)]
 
-    word, (letter, occurrences) = max(most, 
-        key=lambda (word, (letter, occurrences)): occurrences)
+    word, (letter, occurrences) = max(most,
+                                      key=lambda (word, (letter, occurrences)):
+                                      occurrences)
 
     return letter, word, occurrences
 
@@ -127,7 +128,7 @@ def most_appearances_by_letter(filename):
     Return a dictionary mapping letter to a tuple of the most times that letter
     is found in a word or words and the list of those words.
     """
-    appearances = {chr(code): (0, []) for code in range(ord('A'), ord('Z')+1)}
+    appearances = {c: (0, []) for c in string.ascii_uppercase}
 
     for word in words(filename):
         letters, occurrences = most_frequent_letters(word)
@@ -188,6 +189,6 @@ def wordplay(filename):
     for letter, (occurrences, wrds) in appearances.items():
         print "{} ({}): {}".format(letter, occurrences, wrds)
 
-    
+
 if __name__ == "__main__":
     wordplay('sowpods.txt')
